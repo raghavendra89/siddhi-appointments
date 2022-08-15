@@ -1,5 +1,5 @@
 /**
- * Plugin Name:       My Appointments Plugin
+ * Plugin Name:       Siddhit Appointments
  * Plugin URI:        https://example.com/plugins/the-basics/
  * Description:       Appointments booking plugin.
  * Version:           1.0.0

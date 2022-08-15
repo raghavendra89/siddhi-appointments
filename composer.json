@@ -6,9 +6,10 @@
     },
     "autoload": {
         "psr-4": {
-            "MyAppointments\\": "src/"
+            "SiddhiAppointments\\": "src/"
         },
         "files": [
+            "src/helpers.php"
         ]
     },
     "autoload-dev": {
@@ -16,6 +17,7 @@
             "Tests\\": "tests/"
         },
         "files": [
+            "../../../wp-load.php"
         ]
     }
 }
