@@ -1,5 +1,6 @@
+<?php
 /**
- * Plugin Name:       Siddhit Appointments
+ * Plugin Name:       Siddhi Appointments
  * Plugin URI:        https://example.com/plugins/the-basics/
  * Description:       Appointments booking plugin.
  * Version:           1.0.0
@@ -12,3 +13,6 @@
  * Text Domain:       my-appointments-plugin
  * Domain Path:       /languages
  */
+
+register_activation_hook( __FILE__, array( 'GFForms', 'activation_hook' ) );
+register_deactivation_hook( __FILE__, array( 'GFForms', 'deactivation_hook' ) );
