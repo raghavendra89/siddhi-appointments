@@ -14,5 +14,10 @@
  * Domain Path:       /languages
  */
 
-register_activation_hook( __FILE__, array( 'GFForms', 'activation_hook' ) );
-register_deactivation_hook( __FILE__, array( 'GFForms', 'deactivation_hook' ) );
+require_once 'vendor/autoload.php';
+require_once __DIR__ . '/src/constants.php';
+
+$plugin = new SiddhiAppointments\Plugin;
+
+register_activation_hook( __FILE__, array( $plugin, 'activate' ) );
+// register_deactivation_hook( __FILE__, array( $plugin, 'deactive' ) );
