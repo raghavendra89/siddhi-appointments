@@ -31,6 +31,12 @@ class InstallerTest extends TestCase
         $db->expects( $this->once() )
            ->method( 'run_schema' );
 
+        // Assert that do_action is fired
+        global $sa_appointments_wp;
+        $sa_appointments_wp->expects( $this->once() )
+                           ->method( 'do_action' )
+                           ->with( 'sa_appointments_post_install', SA_VERSION );
+
         $installer = new Installer($db);
 
         $installer->install();

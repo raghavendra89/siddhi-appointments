@@ -17,6 +17,8 @@
 require_once 'vendor/autoload.php';
 require_once __DIR__ . '/src/constants.php';
 
+global $sa_appointments_wp;
+$sa_appointments_wp = new SiddhiAppointments\WP;
 $plugin = new SiddhiAppointments\Plugin;
 
 register_activation_hook( __FILE__, array( $plugin, 'activate' ) );

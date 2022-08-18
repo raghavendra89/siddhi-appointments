@@ -66,7 +66,7 @@ class DB
      * @return void
      */
     public function run_schema() {
-        $schema = $this->get_schema( $this->$schema_files_path );
+        $schema = $this->get_schema( $this->schema_files_path );
 
         foreach ( $schema as $table_name => $sql ) {
             $this->db_delta( $sql );

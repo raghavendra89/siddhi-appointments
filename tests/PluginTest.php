@@ -18,7 +18,7 @@ class PluginTest extends TestCase
         $plugin = new Plugin($installer);
 
         $installer->expects( $this->once() )
-                  ->method('install');
+                  ->method( 'install' );
 
         $plugin->activate();
     }

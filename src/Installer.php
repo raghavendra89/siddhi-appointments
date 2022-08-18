@@ -28,12 +28,13 @@ class Installer
 
         update_option( 'sa_appointments_version', SA_VERSION, false );
 
+        global $sa_appointments_wp;
         /**
          * Fires after SA Appointments is fully installed.
          *
          * @param int $version The new $version.
          */
-        do_action( 'sa_appointments_post_install', SA_VERSION );
+        $sa_appointments_wp->do_action( 'sa_appointments_post_install', SA_VERSION );
 
         return true;
     }
