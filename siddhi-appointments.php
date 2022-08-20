@@ -23,3 +23,5 @@ $plugin = new SiddhiAppointments\Plugin;
 
 register_activation_hook( __FILE__, array( $plugin, 'activate' ) );
 // register_deactivation_hook( __FILE__, array( $plugin, 'deactive' ) );
+
+add_action( 'init', array( $plugin, 'init' ) );

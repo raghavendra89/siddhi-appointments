@@ -8,6 +8,14 @@ namespace SiddhiAppointments;
 class WP
 {
     public function do_action( $action, ...$args ) {
-        do_action( $action, $args );
+        do_action( $action, ...$args );
+    }
+
+    public function apply_filters( ...$args ) {
+        return apply_filters( ...$args );
+    }
+
+    public function add_menu_page( ...$args ) {
+        add_menu_page( ...$args );
     }
 }

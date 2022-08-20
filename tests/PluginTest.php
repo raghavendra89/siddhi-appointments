@@ -7,19 +7,43 @@ use SiddhiAppointments\Plugin;
 
 class PluginTest extends TestCase
 {
-    /** @test */
-    public function it_calls_installer_when_activated()
+    private $installer;
+    private $admin_menu;
+
+    protected function setUp(): void
     {
-        // Mock calling DB class
-        $installer = $this->getMockBuilder( Installer::class )
+        parent::setUp();
+
+        // Mock calling Installer class
+        $this->installer = $this->getMockBuilder( Installer::class )
                           ->setMethods( ['install'] )
                           ->getMock();
 
-        $plugin = new Plugin($installer);
+        // Mock calling AdminMenu class
+        $this->admin_menu = $this->getMockBuilder( AdminMenu::class )
+                          ->setMethods( ['create_menu'] )
+                          ->getMock();
+    }
 
-        $installer->expects( $this->once() )
-                  ->method( 'install' );
+    /** @test */
+    public function it_calls_installer_when_activated()
+    {
+        $plugin = new Plugin( $this->installer, $this->admin_menu );
+
+        $this->installer->expects( $this->once() )
+                        ->method( 'install' );
 
         $plugin->activate();
+    }
+
+    /** @test */
+    public function it_creates_menu_when_plugin_is_initiated()
+    {
+        $plugin = new Plugin( $this->installer, $this->admin_menu );
+
+        $this->admin_menu->expects( $this->once() )
+                         ->method( 'create_menu' );
+
+        $plugin->init();
     }
 }
