@@ -21,4 +21,20 @@ class TestCase extends BaseTestCase
         // Overriding the global WP wrapper class, so it can be tested.s
         $sa_appointments_wp = $wp;
     }
+
+    /**
+     * Sets the current_screen as admin screen,
+     * so is_admin() function returns TRUE.
+     */
+    public function setAsAdminScreen()
+    {
+        global $current_screen;
+
+        $current_screen = $this->getMockBuilder('CurrentScreen')
+                               ->setMethods(['in_admin'])
+                               ->getMock();
+
+        $current_screen->method('in_admin')
+                       ->willReturn(true);
+    }
 }

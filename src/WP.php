@@ -11,6 +11,10 @@ class WP
         do_action( $action, ...$args );
     }
 
+    public function add_action( ...$args ) {
+        add_action( ...$args );
+    }
+
     public function apply_filters( ...$args ) {
         return apply_filters( ...$args );
     }

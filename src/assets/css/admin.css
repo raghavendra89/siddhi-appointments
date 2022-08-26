@@ -1,0 +1,86 @@
+:root {
+    --sa-theme-primary: #373E98;
+    --sa-theme-primary-rgb: 55,62,152;
+    /*--sa-theme-primary: #116466;*/
+    /*--sa-theme-primary-rgb: 17,100,102;*/
+}
+
+.sa-appointments-wrapper {
+    margin-top: 20px;
+    padding: 10px;
+}
+.sa-appointments-wrapper .sa-container {
+    margin-top: 15px;
+}
+.sa-appointments-wrapper .sa-page-title {
+    border-bottom: 2px solid var(--sa-theme-primary);
+    height: 35px;
+}
+.sa-appointments-wrapper .sa-page-title h3 {
+    display: inline;
+    font-size: 20px;
+    padding: 10px 15px;
+    background: var(--sa-theme-primary);
+    color: #FFF;
+    position: relative;
+}
+.sa-appointments-wrapper .sa-page-title h3::after {
+    content: "";
+    position: absolute;
+    left: 100%;
+    bottom: 0;
+    border: 22px solid var(--sa-theme-primary);
+    border-top-color: transparent;
+    border-right-color: transparent;
+}
+.sa-text-primary {
+    color: var(--sa-theme-primary);
+}
+.sa-highlight {
+    font-size: 28px;
+    color: #266150;
+}
+.sa-btn {
+    background-color: var(--sa-theme-primary);
+    color: #FFF;
+    border-color: var(--sa-theme-primary);
+    min-width: 190px;
+    font-size: 16px;
+}
+.sa-btn:hover {
+    background-color: rgba(var(--sa-theme-primary-rgb), 0.9);
+}
+.sa-shortcode {
+    font-size: 16px;
+    padding: 5px 10px;
+    border-radius: 4px;
+    background-color: #E8E9EA;
+    color: var(--sa-theme-primary);
+}
+.sa-shortcode-copy {
+    font-size: 25px;
+}
+.sa-pointer {
+    cursor: pointer;
+}
+.sa-tooltip {
+    display: none;
+    position: absolute;
+    padding: 5px 10px;
+    color: #FFF;
+    background-color: var(--sa-theme-primary);
+    border: 1px solid #777; 
+    box-shadow: 0 1px 3px 1px rgba(0,0,0,0.35);
+    border-radius: 3px;
+}
+.sa-tooltip::after {
+    content: '';
+    position: absolute;
+    left: 45%;
+    top: 100%;
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-top: 10px solid var(--sa-theme-primary);
+}

@@ -46,4 +46,31 @@ class PluginTest extends TestCase
 
         $plugin->init();
     }
+
+    /** @test */
+    public function it_registers_required_scripts_and_styles()
+    {
+        $this->setAsAdminScreen();
+
+        $plugin = new Plugin( $this->installer, $this->admin_menu );
+        $plugin->init();
+
+        $this->assertArrayHasKey( 'sa_appointments_admin', wp_styles()->registered );
+        $this->assertArrayHasKey( 'sa_appointments_layout', wp_styles()->registered );
+    }
+
+    /** @test */
+    public function it_enqueues_admin_scripts_and_styles()
+    {
+        $this->setAsAdminScreen();
+
+        // Assert that do_action is fired
+        global $sa_appointments_wp;
+        $sa_appointments_wp->expects( $this->once() )
+                           ->method( 'add_action' )
+                           ->with( 'admin_enqueue_scripts' );
+
+        $plugin = new Plugin( $this->installer, $this->admin_menu );
+        $plugin->init();
+    }
 }
