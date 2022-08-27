@@ -10,7 +10,8 @@ class View
      * @var array $defined_views Template files list.
      */
     private $defined_views = [
-        'appointments_page' => 'appointments-page.php'
+        // 'appointments_page' => 'appointments-page.php',
+        'appointments_page' => 'add-edit-appointment-type.php'
     ];
 
     /**
