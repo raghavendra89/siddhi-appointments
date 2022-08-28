@@ -18,7 +18,12 @@ class View
      * Magic method to implement common view rendering functions.
      */
     public function __call( $name, $args ) {
-        return $this->render( $name );
+        $page = str_replace( 'render_', '', $name);
+        if ( ! in_array( $page, array_keys( $this->defined_views ) ) ) {
+            return '';
+        }
+
+        return $this->render( $this->defined_views[ $page ] );
     }
 
     /**
@@ -27,14 +32,13 @@ class View
      * @param string $page Page key, specified which template to render.
      * @return string
      */
-    private function render( $page ) {
-        $page = str_replace( 'render_', '', $page);
-        if ( ! in_array( $page, array_keys( $this->defined_views ) ) ) {
+    public function render( $page ) {
+        // TODO: Should we provide the option to override the templates?
+        $page_template = SA_PLUGIN_PATH . 'src/templates/' . $page;
+
+        if ( ! file_exists( $page_template ) ) {
             return '';
         }
-
-        // TODO: Should we provide the option to override the templates?
-        $page_template = SA_PLUGIN_PATH . 'src/templates/' . $this->defined_views[ $page ];
 
         ob_start();
         require $page_template;

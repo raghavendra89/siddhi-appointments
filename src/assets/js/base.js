@@ -45,8 +45,20 @@ var sa_sections = function ($) {
 var sa_base = function ($) {
 
     $(document).ready(init)
+    $(document).on('click', '.sa-time-slot', handleTimeSlotSelection)
 
     function init() {
         sa_tooltip.init()
+    }
+
+    function handleTimeSlotSelection() {
+        $slot = $(this)
+        if ($slot.hasClass('checked')) {
+            $slot.find('input').prop('checked', false)
+        } else {
+            $slot.find('input').prop('checked', true)
+        }
+
+        $slot.toggleClass('checked')
     }
 }(jQuery);

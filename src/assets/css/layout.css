@@ -735,4 +735,56 @@
 .sa-float-end {
     float: right !important;
 }
+.sa-form-label,
+.sa-form-check-label {
+    padding: 0;
+    margin-bottom: 7px;
+}
+.sa-form-check-label {
+    padding-left: 6px;
+}
+input.sa-form-control,
+select.sa-form-control {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    padding: 6px 12px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+}
+.sa-form-check {
+    padding-left: 10px;
+}
+.sa-form-check-inline {
+    display: inline-block;
+    margin-right: 10px;
+}
+input.sa-form-check-input {
+    width: 18px;
+    height: 18px;
+    margin-top: 2px;
+    vertical-align: top;
+    background-color: #fff;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    border: 1px solid rgba(0,0,0,.25);
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+input.sa-form-check-input:checked[type="checkbox"] {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='M6 10l3 3l6-6'/%3e%3c/svg%3e")
+}
+input.sa-form-check-input:checked {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+}
+.sa-table {
+    width: 100%;
+}
+.sa-table>:not(caption)>*>* {
+    padding: 7px;
+}
 /* END: Bootstrap based basic css */
