@@ -27,7 +27,7 @@
                     </div>
                 </div>
 
-                <div class="sa-section">
+                <div class="sa-section collapsed">
                     <div class="sa-section-header sa-pointer">
                         <div class="sa-section-title">
                             Time Slots
@@ -38,6 +38,34 @@
 
                     <div class="sa-section-body">
                         <?php sa_view( 'appointment-type._timeslot-details' ); ?>
+                    </div>
+                </div>
+
+                <div class="sa-section collapsed">
+                    <div class="sa-section-header sa-pointer">
+                        <div class="sa-section-title">
+                            Customer Information
+                            <div class="sa-section-sub-title">Customer information collected while booking appointment.</div>
+                        </div>
+                        <span><img src="<?php echo SA_PLUGIN_ASSETS_PATH . 'img/expand_more.svg' ?>"></span>
+                    </div>
+
+                    <div class="sa-section-body">
+                        <?php sa_view( 'appointment-type._customer-details' ); ?>
+                    </div>
+                </div>
+
+                <div class="sa-section">
+                    <div class="sa-section-header sa-pointer">
+                        <div class="sa-section-title">
+                            Notifications
+                            <div class="sa-section-sub-title">Configure notification and reminders.</div>
+                        </div>
+                        <span><img src="<?php echo SA_PLUGIN_ASSETS_PATH . 'img/expand_more.svg' ?>"></span>
+                    </div>
+
+                    <div class="sa-section-body">
+                        <h5>Notifications & Reminders</h5>
                     </div>
                 </div>
 

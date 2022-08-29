@@ -105,8 +105,8 @@
     width: 30px;
     height: 30px;
 }
-.sa-time-slot.checked .sa-form-check-input:checked::before {
-    content: "";
+.sa-form-check-input:checked::before {
+    content: "" !important;
 }
 #sa-timeslots-table-wrapper {
     display: inline-block;
