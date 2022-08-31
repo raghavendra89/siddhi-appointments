@@ -55,7 +55,7 @@
                     </div>
                 </div>
 
-                <div class="sa-section">
+                <div class="sa-section sa-notifications-section">
                     <div class="sa-section-header sa-pointer">
                         <div class="sa-section-title">
                             Notifications
@@ -65,7 +65,21 @@
                     </div>
 
                     <div class="sa-section-body">
-                        <h5>Notifications & Reminders</h5>
+                        <?php sa_view( 'appointment-type._notifications' ); ?>
+                    </div>
+                </div>
+
+                <div class="sa-section collapsed">
+                    <div class="sa-section-header sa-pointer">
+                        <div class="sa-section-title">
+                            Roles and Permissions
+                            <div class="sa-section-sub-title">Configure roles and capablities.</div>
+                        </div>
+                        <span><img src="<?php echo SA_PLUGIN_ASSETS_PATH . 'img/expand_more.svg' ?>"></span>
+                    </div>
+
+                    <div class="sa-section-body">
+                        <h4 class="sa-py-5 sa-text-center">Roles & Capabilities</h4>
                     </div>
                 </div>
 

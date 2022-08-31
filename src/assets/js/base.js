@@ -17,6 +17,9 @@ var sa_tooltip = function ($) {
     }
 }(jQuery);
 
+/**
+ * Sections accordion.
+ */
 var sa_sections = function ($) {
     $(document).on('click', '.sa-section-header', hideShowSection)
 
@@ -39,6 +42,45 @@ var sa_sections = function ($) {
         $section.find('.sa-section-body').slideUp(450, function () {
             $section.addClass('collapsed')
         })
+    }
+}(jQuery);
+
+/**
+ * Sections accordion.
+ */
+var sa_notifications = function ($) {
+    $(document).on('click', '.sa-notification-header', hideShowNotification)
+    $(document).on('click', '.sa-active-input', activateNotification)
+
+    function hideShowNotification() {
+        var $notification = $(this).closest('.sa-notification')
+
+        if ($notification.hasClass('collapsed')) {
+            _showNotification($notification)
+        } else {
+            _hideNotification($notification)
+        }
+    }
+
+    function _showNotification($notification) {
+        $notification.find('.sa-notification-footer').slideDown(150)
+        $notification.find('.sa-notification-content').slideDown(450)
+        $notification.removeClass('collapsed')
+    }
+
+    function _hideNotification($notification) {
+        $notification.find('.sa-notification-footer').slideUp(150)
+        $notification.find('.sa-notification-content').slideUp(450, function () {
+            $notification.addClass('collapsed')
+        })
+    }
+
+    function activateNotification() {
+        if ($(this).is(':checked')) {
+            $(this).closest('label').find('.sa-active-switch-text').text('Inactivate')
+        } else {
+            $(this).closest('label').find('.sa-active-switch-text').text('Activate')
+        }
     }
 }(jQuery);
 
