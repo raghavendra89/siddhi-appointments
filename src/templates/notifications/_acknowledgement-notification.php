@@ -10,7 +10,7 @@
             <?php sa_view( 'components._notification-active-indicator' ); ?>
         </h4>
 
-        <span><img src="<?php echo SA_PLUGIN_ASSETS_PATH . 'img/expand_more.svg' ?>"></span>
+        <span><?php sa_view( 'icons._expand_more' ); ?></span>
     </div>
 
     <div class="sa-notification-content">
