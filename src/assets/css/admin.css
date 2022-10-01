@@ -1,12 +1,3 @@
-:root {
-    --sa-theme-primary: #373E98;
-    --sa-theme-primary-rgb: 55,62,152;
-    /*--sa-theme-primary: #116466;*/
-    /*--sa-theme-primary-rgb: 17,100,102;*/
-    --sa-text-muted: #6C757D;
-    --sa-text-success: #388E3C;
-    --sa-border-color: rgb(222, 226, 230);
-}
 
 .sa-text-muted {
     color: var(--sa-text-muted);
@@ -63,6 +54,30 @@
 }
 .sa-btn:hover {
     background-color: rgba(var(--sa-theme-primary-rgb), 0.9);
+}
+.sa-btn-secondary {
+    color: #fff;
+    background-color: #6c757d;
+    border-color: #6c757d;
+}
+.sa-btn-secondary:hover {
+    color: #fff;
+    background-color: #5c636a;
+    border-color: #565e64;
+}
+.sa-btn-icon {
+    display: flex;
+    min-width: 32px;
+}
+.sa-btn-icon svg,
+.sa-btn-icon:hover svg {
+    fill: #FFF;
+}
+.sa-btn-outline {
+    background-color: transparent;
+}
+.sa-btn-outline svg {
+    fill: var(--sa-theme-primary);
 }
 .sa-shortcode {
     font-size: 16px;
@@ -347,3 +362,92 @@ input.sa-active-input:checked + .sa-active-switch .sa-active-switch-indicator sv
     transition: opacity 0.25s ease-in-out;
 }
 /* END: Notification active switch */
+
+.sa-dropdown-item svg {
+    transform: scale(0.75);
+    vertical-align: middle;
+}
+.sa-status {
+    padding: 5px 12px;
+    border-radius: 4px;
+    font-weight: bold;
+}
+.sa-status-pending {
+    background-color: #F8D749;
+    color: #000;
+}
+.sa-status-confirmed {
+    background-color: var(--sa-text-success);
+    color: #FFF;
+}
+.sa-status-cancelled {
+    background-color: var(--sa-text-danger);
+    color: #FFF;
+}
+
+/* Appointments Listing Table */
+.sa-appointments-list-table-wrapper {
+    background-color: #F6F7F9;
+    padding: 5px 15px 25px;
+}
+.sa-appointments-list-table-wrapper table {
+    border-collapse: separate;
+    background-color: #F6F7F9;
+    border-spacing: 0 10px;
+    border: 0;
+}
+.sa-appointments-list-table-wrapper table tfoot {
+    display: none;
+}
+.sa-appointments-list-table-wrapper table tr {
+    background-color: #FFF !important;
+    /*box-shadow: rgb(99 99 99 / 10%) 0px 2px 8px 0px;*/
+    box-shadow: 0 1px 3px rgb(0 0 0 / 12%), 0 1px 2px rgb(0 0 0 / 10%);
+    border-radius: 7px;
+}
+.sa-appointments-list-table-wrapper table tbody tr:hover {
+    box-shadow: 0px 2px 7px rgb(0 0 0 / 10%), 0 0px 7px rgb(0 0 0 / 20%);
+}
+.sa-appointments-list-table-wrapper table tr>*:first-child {
+    border-top-left-radius: 7px;
+    border-bottom-left-radius: 7px;
+}
+.sa-appointments-list-table-wrapper table tr>*:last-child {
+    border-top-right-radius: 7px;
+    border-bottom-right-radius: 7px;
+}
+.sa-appointments-list-table-wrapper table thead tr {
+    background-color: #F6F7F9 !important;
+    box-shadow: none;
+}
+.sa-appointments-list-table-wrapper table thead th,
+.sa-appointments-list-table-wrapper table thead td {
+    border: 0;
+    font-weight: 700;
+}
+.sa-appointments-list-table-wrapper table thead th:last-child {
+    width: 90px;
+}
+.sa-appointments-list-table-wrapper table th.check-column {
+    padding: 12px 2px;
+    vertical-align: middle;
+}
+.sa-appointments-list-table-wrapper table tr td {
+    padding: 12px 8px;
+    vertical-align: middle;
+}
+.sa-appointments-list-table-wrapper .tablenav select {
+    margin: 0;
+    margin-right: 6px;
+}
+.sa-appointments-list-table-wrapper .pagination-links input {
+    width: 30px;
+    padding: 0 8px;
+}
+.sa-appointments-list-filter {
+    padding: 12px 15px;
+    background-color: #FFF;
+    box-shadow: rgb(60 64 67 / 30%) 0px 1px 2px 0px, rgb(60 64 67 / 15%) 0px 1px 3px 1px;
+    border-radius: 7px;
+}
+/* END: Appointments Listing Table */

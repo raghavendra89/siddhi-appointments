@@ -11,7 +11,8 @@ class View
      */
     private $defined_views = [
         // 'appointments_page' => 'appointments-page.php',
-        'appointments_page' => 'add-edit-appointment-type.php'
+        // 'add_edit_appointment_type' => 'add-edit-appointment-type.php',
+        'appointments_page' => 'appointments-list.php'
     ];
 
     /**
@@ -30,9 +31,10 @@ class View
      * Common view rendering function.
      *
      * @param string $page Page key, specified which template to render.
+     * @param boolean $echo Whether to echo the content or return as string
      * @return string
      */
-    public function render( $page ) {
+    public function render( $page, $echo = true ) {
         // TODO: Should we provide the option to override the templates?
         $page_template = SA_PLUGIN_PATH . 'src/templates/' . $page;
 
@@ -42,6 +44,11 @@ class View
 
         ob_start();
         require $page_template;
+
+        if ( ! $echo ) {
+            return ob_get_clean();
+        }
+
         echo ob_get_clean();
     }
 }

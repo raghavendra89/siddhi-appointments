@@ -88,9 +88,14 @@ var sa_base = function ($) {
 
     $(document).ready(init)
     $(document).on('click', '.sa-time-slot', handleTimeSlotSelection)
+    // $(document).on('click', 'button[data-toggle="sa-dropdown"]', hideShowDropdown)
+    $(document).on('click', hideShowDropdown)
+    $(document).on('click', '.sa-list-filter-btn', hideShowFiltersSection)
 
     function init() {
         sa_tooltip.init()
+
+        $('.sa-appointments-list-table-wrapper table .check-column').find('input[type="checkbox"]').addClass('sa-form-check-input')
     }
 
     function handleTimeSlotSelection() {
@@ -102,5 +107,34 @@ var sa_base = function ($) {
         }
 
         $slot.toggleClass('checked')
+    }
+
+    function hideShowDropdown(event) {
+        $dropdown = $(event.target).closest('.sa-dropdown')
+        $dropdownToggle = $(event.target).closest('.sa-dropdown-toggle')
+        if ($dropdownToggle.length) {
+            $('.sa-dropdown-menu').removeClass('show')
+
+            $dropdown.find('.sa-dropdown-menu').toggleClass('show')
+            return;
+        }
+
+        if ($dropdown.length) {
+            return;
+        }
+
+        $('.sa-dropdown-menu').removeClass('show')
+    }
+
+    function hideShowFiltersSection() {
+        $filterBtn = $(this);
+
+        if ($filterBtn.hasClass('sa-btn-outline')) {
+            $filterBtn.removeClass('sa-btn-outline')
+            $('.sa-appointments-list-filter').slideDown()
+        } else {
+            $filterBtn.addClass('sa-btn-outline')
+            $('.sa-appointments-list-filter').slideUp()
+        }
     }
 }(jQuery);
