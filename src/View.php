@@ -12,7 +12,8 @@ class View
     private $defined_views = [
         // 'appointments_page' => 'appointments-page.php',
         // 'add_edit_appointment_type' => 'add-edit-appointment-type.php',
-        'appointments_page' => 'appointments-list.php'
+        'appointments_page' => 'appointments-list.php',
+        'appointments_page' => 'single-appointment.php'
     ];
 
     /**

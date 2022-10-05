@@ -7,6 +7,7 @@
     --sa-text-success: #388E3C;
     --sa-text-danger: #C8444A;
     --sa-border-color: rgb(222, 226, 230);
+    --sa-box-shadow: rgb(60 64 67 / 10%) 0px 1px 2px 0px, rgb(60 64 67 / 10%) 0px 1px 3px 1px;
 }
 
 /* Bootstrap based basic css */
@@ -878,5 +879,19 @@ a.sa-dropdown-item {
 }
 .sa-dropdown-item:focus svg, .sa-dropdown-item:hover svg {
     fill: #FFF;
+}
+.sa-align-items-baseline {
+    align-items: baseline;
+}
+.sa-position-relative {
+    position: relative;
+}
+.sa-badge {
+    display: inline-block;
+    background-color: var(--sa-theme-primary);
+    color: #FFF;
+    padding: 3px 5px;
+    border-radius: 4px;
+    font-size: 85%;
 }
 /* END: Bootstrap based basic css */
