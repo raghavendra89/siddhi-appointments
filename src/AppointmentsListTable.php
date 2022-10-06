@@ -113,7 +113,7 @@ class AppointmentsListTable extends \WP_List_Table
                         <img src="'. SA_PLUGIN_ASSETS_PATH . 'img/more_vert.svg' .'" alt="Actions">
                     </button>
                     <ul class="sa-dropdown-menu">
-                        <li><a class="sa-dropdown-item" href="#"><span class="sa-me-1">'. sa_view( 'icons._eye', false ) .'</span>View</a></li>
+                        <li><a class="sa-dropdown-item" href="?page=sa-appointments&id=1"><span class="sa-me-1">'. sa_view( 'icons._eye', false ) .'</span>View</a></li>
                         <li><a class="sa-dropdown-item" href="#"><span class="sa-me-1">'. sa_view( 'icons._confirm_appointment', false ) .'</span>Confirm</a></li>
                         <li><a class="sa-dropdown-item" href="#"><span class="sa-me-1">'. sa_view( 'icons._cancel_appointment', false ) .'</span>Cancel</a></li>
                         <li><a class="sa-dropdown-item" href="#"><span class="sa-me-1">'. sa_view( 'icons._trash', false ) .'</span>Delete</a></li>

@@ -65,6 +65,10 @@
 .sa-btn:hover {
     background-color: rgba(var(--sa-theme-primary-rgb), 0.9);
 }
+a.sa-btn:hover {
+    color: #FFF;
+    text-decoration: none;
+}
 .sa-btn-secondary {
     color: #fff;
     background-color: #6c757d;

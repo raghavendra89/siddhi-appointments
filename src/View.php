@@ -10,10 +10,11 @@ class View
      * @var array $defined_views Template files list.
      */
     private $defined_views = [
-        // 'appointments_page' => 'appointments-page.php',
-        // 'add_edit_appointment_type' => 'add-edit-appointment-type.php',
+        'appointment_types_page' => 'appointments-page.php',
+        'add_edit_appointment_type_page' => 'add-edit-appointment-type.php',
+        'single_appointment_page' => 'single-appointment.php',
         'appointments_page' => 'appointments-list.php',
-        'appointments_page' => 'single-appointment.php'
+        'settings_page' => 'appointments-list.php'
     ];
 
     /**
@@ -21,6 +22,13 @@ class View
      */
     public function __call( $name, $args ) {
         $page = str_replace( 'render_', '', $name);
+        if ( $page == 'appointments_page' && ! empty( $_GET['id'] ) ) {
+            $page = 'single_appointment_page';
+        }
+        if ( $page == 'appointment_types_page' && ! empty( $_GET['id'] ) ) {
+            $page = 'add_edit_appointment_type_page';
+        }
+
         if ( ! in_array( $page, array_keys( $this->defined_views ) ) ) {
             return '';
         }

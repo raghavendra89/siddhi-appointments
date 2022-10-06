@@ -53,9 +53,9 @@
                                     <div class="sa-col-md-4 sa-pt-2">
                                         <span class="sa-shortcode">[sa_appointments_1]</span>
                                         <span class="dashicons dashicons-admin-page sa-text-primary sa-shortcode-copy sa-pointer" data-sa-toggle="tooltip" data-sa-title="Copy Shortcode"></span><br>
-                                        <button class="sa-btn sa-mt-3">
+                                        <a class="sa-btn sa-mt-3" href="?page=sa-appointment-types&id=1">
                                             Edit Appointment
-                                        </button>
+                                        </a>
                                     </div>
 
                                 </div>

@@ -22,4 +22,8 @@ class WP
     public function add_menu_page( ...$args ) {
         add_menu_page( ...$args );
     }
+
+    public function add_submenu_page( ...$args ) {
+        add_submenu_page( ...$args );
+    }
 }

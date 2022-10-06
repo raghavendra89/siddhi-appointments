@@ -34,7 +34,6 @@ class Plugin
      * @return void
      */
     public function init() {
-        $this->admin_menu->create_menu();
 
         $this->register_admin_styles();
 
@@ -43,6 +42,16 @@ class Plugin
 
             $sa_appointments_wp->add_action( 'admin_enqueue_scripts', [$this, 'enqueue_admin_scripts'] );
         }
+    }
+
+    /**
+     * Create menu for the plugin.
+     *
+     * @return void
+     */
+    public function create_menu()
+    {
+        $this->admin_menu->create_menu();
     }
 
     private function register_admin_styles() {

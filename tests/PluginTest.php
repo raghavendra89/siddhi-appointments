@@ -37,14 +37,14 @@ class PluginTest extends TestCase
     }
 
     /** @test */
-    public function it_creates_menu_when_plugin_is_initiated()
+    public function it_creates_menu()
     {
         $plugin = new Plugin( $this->installer, $this->admin_menu );
 
         $this->admin_menu->expects( $this->once() )
                          ->method( 'create_menu' );
 
-        $plugin->init();
+        $plugin->create_menu();
     }
 
     /** @test */
