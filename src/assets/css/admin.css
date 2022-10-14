@@ -550,3 +550,32 @@ input.sa-active-input:checked + .sa-active-switch .sa-active-switch-indicator sv
     border-radius: 4px;
 }
 /* END: Single Appointment */
+
+/* Settings */
+.sa-setting-sidebar {
+    border: 1px solid var(--sa-border-color);
+    border-radius: 5px;
+}
+.sa-setting-menu {
+    border-bottom: 1px solid var(--sa-border-color);
+}
+.sa-setting-menu:hover {
+    cursor: pointer;
+    background-color: #F3F6FD;
+}
+.sa-setting-menu.active {
+    background-color: #F3F6FD;
+}
+.sa-setting-section {
+    display: none;
+    box-shadow: var(--sa-box-shadow);
+    border: 1px solid var(--sa-border-color);
+    border-radius: 8px;
+}
+.sa-setting-section.active {
+    display: block;
+}
+.sa-setting-section>h4 {
+    border-bottom: 1px solid var(--sa-border-color);
+}
+/* END: Settings */

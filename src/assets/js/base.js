@@ -91,6 +91,7 @@ var sa_base = function ($) {
     // $(document).on('click', 'button[data-toggle="sa-dropdown"]', hideShowDropdown)
     $(document).on('click', hideShowDropdown)
     $(document).on('click', '.sa-list-filter-btn', hideShowFiltersSection)
+    $(document).on('click', '.sa-setting-menu', showSettingSection)
 
     function init() {
         sa_tooltip.init()
@@ -136,5 +137,15 @@ var sa_base = function ($) {
             $filterBtn.addClass('sa-btn-outline')
             $('.sa-appointments-list-filter').slideUp()
         }
+    }
+
+    function showSettingSection() {
+        if($(this).hasClass('active'))
+            return;
+
+        $('.sa-setting-menu').removeClass('active')
+        $('.sa-setting-section').removeClass('active')
+        $(this).addClass('active')
+        $($(this).data('target')).addClass('active')
     }
 }(jQuery);

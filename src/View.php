@@ -14,7 +14,7 @@ class View
         'add_edit_appointment_type_page' => 'add-edit-appointment-type.php',
         'single_appointment_page' => 'single-appointment.php',
         'appointments_page' => 'appointments-list.php',
-        'settings_page' => 'appointments-list.php'
+        'settings_page' => 'settings.php'
     ];
 
     /**
