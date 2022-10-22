@@ -65,3 +65,5 @@
     </div>
 
 </div>
+
+<?php sa_view( 'frontend.modal' ); ?>

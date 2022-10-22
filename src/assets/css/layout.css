@@ -762,7 +762,8 @@
     padding-left: 6px;
 }
 input.sa-form-control,
-select.sa-form-control {
+select.sa-form-control,
+textarea.sa-form-control {
     display: block;
     width: 100%;
     max-width: 100%;
@@ -893,5 +894,81 @@ a.sa-dropdown-item {
     padding: 3px 5px;
     border-radius: 4px;
     font-size: 85%;
+}
+.sa-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1060;
+    /*display: none;*/
+    width: 100%;
+    height: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+    outline: 0;
+}
+.sa-modal-dialog {
+    position: relative;
+    display: flex;
+    align-items: center;
+    min-height: calc(100% - 30px);
+    width: auto;
+    pointer-events: none;
+    max-width: 800px;
+    margin: 30px auto;
+}
+.sa-modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1040;
+    width: 100vw;
+    height: 100vh;
+    background-color: #000;
+    opacity: 0;
+}
+.sa-modal-content {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    pointer-events: auto;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid rgba(0,0,0,.2);
+    border-radius: 0.3rem;
+    outline: 0;
+}
+.sa-modal-header {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 1rem;
+    border-bottom: 1px solid #dee2e6;
+    border-top-left-radius: calc(0.3rem - 1px);
+    border-top-right-radius: calc(0.3rem - 1px);
+}
+.sa-modal-body {
+    position: relative;
+    flex: 1 1 auto;
+    padding: 1rem;
+}
+.sa-modal-footer {
+    display: flex;
+    flex-wrap: wrap;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 0.75rem;
+    border-top: 1px solid #dee2e6;
+    border-bottom-right-radius: calc(0.3rem - 1px);
+    border-bottom-left-radius: calc(0.3rem - 1px);
+}
+.sa-modal-backdrop.show {
+    opacity: 0.5;
+}
+.sa-bg-light {
+    background-color: #f8f9fa!important;
 }
 /* END: Bootstrap based basic css */

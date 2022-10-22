@@ -579,3 +579,168 @@ input.sa-active-input:checked + .sa-active-switch .sa-active-switch-indicator sv
     border-bottom: 1px solid var(--sa-border-color);
 }
 /* END: Settings */
+
+#sa-booking-modal .sa-modal-header {
+    background-color: var(--sa-theme-primary);
+    color: #FFF;
+}
+#sa-booking-modal .sa-modal-header svg {
+    fill: #FFF;
+}
+#sa-booking-modal .sa-booking-steps {
+    border-right: 1px solid var(--sa-border-color);
+}
+#sa-booking-modal .sa-booking-steps ul li {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    font-size: 18px;
+    margin-bottom: 25px;
+    position: relative;
+}
+#sa-booking-modal .sa-booking-steps ul li:before {
+    position: absolute;
+    content: "";
+    width: 2px;
+    height: 50px;
+    background-color: #EDEDED;
+    left: 17px;
+    top: -40px;
+}
+#sa-booking-modal .sa-booking-steps ul li:first-child:before {
+    display: none;
+}
+#sa-booking-modal .sa-booking-steps ul li.sa-booking-step.completed:before {
+    background-color: var(--sa-text-success);
+}
+#sa-booking-modal .sa-booking-steps ul li.sa-booking-step span {
+    display: inline-flex;
+    width: 36px;
+    height: 36px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    background-color: #EDEDED;
+    z-index: 5;
+    margin-right: 10px;
+}
+#sa-booking-modal .sa-booking-steps ul li.sa-booking-step.completed span {
+    background-color: var(--sa-text-success);
+}
+#sa-booking-modal .sa-booking-steps ul li.sa-booking-step span svg {
+    width: 28px;
+    height: 28px;
+    opacity: 0;
+}
+#sa-booking-modal .sa-booking-steps ul li.sa-booking-step.completed span svg {
+    opacity: 1;
+    fill: #FFF;
+}
+#sa-booking-modal .sa-booking-service {
+    display: flex;
+    box-shadow: var(--sa-box-shadow);
+    border-radius: 10px;
+    border: 1px solid rgba(0,0,0,.125);
+    padding: 8px;
+    align-items: center;
+    margin-bottom: 10px;
+}
+#sa-booking-modal .sa-booking-service svg {
+    width: 28px;
+    height: 28px;
+    fill: #AAA;
+}
+#sa-booking-modal .sa-booking-service.selected {
+    background-color: var(--sa-theme-primary);
+    color: #FFF;
+}
+#sa-booking-modal .sa-booking-service.selected svg {
+    fill: #FFF;
+}
+#sa-booking-modal .sa-modal-footer {
+    display: block;
+}
+#sa-booking-modal .sa-booking-step-content:not(.active) {
+    display: none;
+}
+#sa-booking-modal .flatpickr-calendar .numInputWrapper span {
+    display: none;
+}
+#sa-booking-modal .flatpickr-calendar .numInputWrapper:hover,
+#sa-booking-modal .flatpickr-current-month span.cur-month:hover {
+    background-color: transparent;
+}
+#sa-booking-modal .flatpickr-month,
+#sa-booking-modal .flatpickr-weekdays,
+#sa-booking-modal .flatpickr-weekday {
+    background-color: var(--sa-theme-primary);
+    color: #FFF;
+}
+#sa-booking-modal .flatpickr-day {
+    color: #000;
+}
+#sa-booking-modal .flatpickr-day.selected {
+    background-color: var(--sa-theme-primary);
+    color: #FFF;
+}
+#sa-booking-modal .flatpickr-day.prevMonthDay,
+#sa-booking-modal .flatpickr-day.nextMonthDay {
+    color: rgba(57,57,57,0.5);
+}
+#sa-booking-modal .flatpickr-months .flatpickr-prev-month svg,
+#sa-booking-modal .flatpickr-months .flatpickr-next-month svg {
+    fill: #FFF;
+}
+#sa-booking-modal .sa-timeslots-wrapper {
+    max-width: 120px;
+}
+#sa-booking-modal .sa-timeslots {
+    overflow-y: scroll;
+    max-height: 280px;
+}
+#sa-booking-modal .sa-time-slot {
+    max-width: 120px;
+    text-align: center;
+    font-size: 16px;
+    padding: 8px;
+    margin-bottom: 7px;
+    background-color: #FFF;
+    border: 1px solid var(--sa-border-color);
+}
+#sa-booking-modal .sa-time-slot.disabled {
+    opacity: 0.65;
+    background-color: #F5F5F5;
+}
+#sa-booking-modal .sa-time-slot.checked {
+    background-color: var(--sa-theme-primary);
+    color: #FFF;
+}
+#sa-booking-modal .sa-timeslot-scroll {
+    cursor: pointer;
+    width: 40px;
+    position: relative;
+    border-left: 20px solid transparent;
+    border-right: 20px solid transparent;
+    margin: auto;
+}
+#sa-booking-modal .sa-timeslot-scrollup {
+    border-bottom: 20px solid rgb(212, 216, 220);
+    margin-bottom: 6px;
+}
+#sa-booking-modal .sa-timeslot-scrolldown {
+    border-top: 20px solid rgb(212, 216, 220);
+    margin-top: 6px;
+}
+#sa-booking-modal .sa-form-control {
+    max-width: 400px;
+}
+#sa-booking-modal .sa-booked-icon svg {
+    width: 75px;
+    border: 1px solid var(--sa-text-success);
+    border-radius: 50%;
+    fill: var(--sa-text-success);
+}
+#sa-booking-modal .sa-booking-summary {
+    max-width: 500px;
+    margin: auto;
+}

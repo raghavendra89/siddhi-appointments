@@ -149,3 +149,7 @@ var sa_base = function ($) {
         $($(this).data('target')).addClass('active')
     }
 }(jQuery);
+
+jQuery(document).ready(function () {
+    jQuery(".sa-booking-date-picker").flatpickr({inline: true, monthSelectorType: 'static'});
+})

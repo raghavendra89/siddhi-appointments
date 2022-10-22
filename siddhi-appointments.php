@@ -26,3 +26,12 @@ register_activation_hook( __FILE__, array( $plugin, 'activate' ) );
 
 add_action( 'init', array( $plugin, 'init' ) );
 add_action( 'admin_menu', array( $plugin, 'create_menu' ) );
+
+function test()
+{
+    ?>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+        <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <?php
+}
+add_action( 'admin_head', 'test' );
