@@ -6,6 +6,15 @@ use SiddhiAppointments\App\Exceptions\ValidationException;
 
 class Validator
 {
+    private $supportedRules = [
+        'required' => 'required\|',
+        'string' => 'string\|',
+        'int' => 'int\|',
+        'array' => 'array\|',
+        'max' => 'max:(.+?\|)',
+        'regex' => 'regex:(.*(?=\|required|string|int|array|max|dummy))',
+    ];
+
     private $errors = [];
     private $errorMessages = [
         'required' => 'This field is required.',
@@ -28,6 +37,24 @@ class Validator
     {
         $method = strtolower( str_replace( 'validate', '', $method ) );
         throw new \Exception( "The validation rule '". $method ."' is not supported." );
+    }
+
+    private function parseValidationRules( string $rule )
+    {
+        $rule .= '|dummy';
+        $regex = '';
+        foreach ( $this->supportedRules as $supportedRule ) {
+            $regex .= $supportedRule . '|';
+        }
+        $regex = rtrim( $regex, '|' );
+        $regex = '('. $regex .')';
+
+        preg_match_all( '/' . $regex . '/', $rule, $matchedRules );
+
+        foreach ( $matchedRules[0] as &$matchedRule ) {
+            $matchedRule = rtrim( $matchedRule, '|' );
+        }
+        return $matchedRules[0];
     }
 
     private function getFieldValue( $data, $field )
@@ -73,10 +100,10 @@ class Validator
     public function validate( array $data, array $rules )
     {
         foreach ( $rules as $field => $rule ) {
-            $validatorRules = explode( '|', $rule );
+            $validatorRules = $this->parseValidationRules($rule);
 
             foreach ( $validatorRules as $validatorRule ) {
-                $ruleArgs = explode( ':', $validatorRule );
+                $ruleArgs = preg_split( '/:/', $validatorRule, 2 );
                 $condition = $ruleArgs[1] ?? 0;
 
                 $method = 'validate' . ucfirst( $ruleArgs[0] );

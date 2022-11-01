@@ -20,16 +20,14 @@ class ValidatorTest extends TestCase
     }
 
     /** @test */
-    public function it_throws_exception_if_rule_does_not_exist()
+    public function it_igonres_rules_which_do_not_exist()
     {
-        $this->expectException( \Exception::class );
-        $this->expectExceptionMessage( "The validation rule 'unknown' is not supported." );
-
         $data = [];
-        $rules = ['name' => 'unknown'];
+        $rules = ['name' => 'dummy'];
 
         $validator = new Validator();
-        $validator->validate( $data, $rules );
+        $result = $validator->validate( $data, $rules );
+        $this->assertTrue($result);
     }
 
     /** @test */
@@ -138,6 +136,17 @@ class ValidatorTest extends TestCase
 
             $this->assertSame( $errors, $e->errors() );
         }
+    }
+
+    /** @test */
+    public function it_validates_regex_rule_1()
+    {
+        $data = ['start_time' => '10:00'];
+        $rules = ['start_time' => 'regex:([0-1]\d|2[0-3]):[0-5]\d$'];
+
+        $validator = new Validator();
+        $result = $validator->validate( $data, $rules );
+        $this->assertTrue($result);
     }
 
     /** @test */
