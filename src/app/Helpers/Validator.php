@@ -86,7 +86,11 @@ class Validator
             }
         }
 
-        $this->errors[$fieldKeys[0]] = $error;
+        if ( is_array( $error ) ) {
+            $this->errors[$fieldKeys[0]][key($error)] = reset($error);
+        } else {
+            $this->errors[$fieldKeys[0]] = $error;
+        }
     }
 
     /**
@@ -148,7 +152,7 @@ class Validator
      */
     private function validateString( $field, $value='' )
     {
-        if ( ! is_string( $value ) ) {
+        if ( ! empty( $value ) && ! is_string( $value ) ) {
             $this->updateErrors( $field, $this->errorMessages['string'] );
             return false;
         }
@@ -164,7 +168,7 @@ class Validator
      */
     private function validateInt( $field, $value='' )
     {
-        if ( ! is_int( $value ) ) {
+        if ( ! empty( $value ) && ! is_int( $value ) ) {
             $this->updateErrors( $field, $this->errorMessages['int'] );
             return false;
         }
@@ -180,7 +184,7 @@ class Validator
      */
     private function validateArray( $field, $value='' )
     {
-        if ( ! is_array( $value ) ) {
+        if ( ! empty( $value ) && ! is_array( $value ) ) {
             $this->updateErrors( $field, $this->errorMessages['array'] );
             return false;
         }
@@ -218,7 +222,7 @@ class Validator
             return false;
         }
 
-        if ( ! preg_match( "/$pattern/", $value ) ) {
+        if ( ! empty( $value ) && ! preg_match( "/$pattern/", $value ) ) {
             $this->updateErrors( $field, $this->errorMessages['regex'] );
             return false;
         }

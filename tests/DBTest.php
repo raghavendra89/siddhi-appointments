@@ -28,4 +28,18 @@ class DBTest extends TestCase
 
         $this->assertEquals( $expected_schema, $schema);
     }
+
+    /** @test */
+    public function it_returns_class_instance_when_table_method_is_called()
+    {
+        global $wpdb;
+
+        $this->assertInstanceOf(DB::class, DB::table($wpdb->prefix . 'dummy'));
+    }
+
+    /** @test */
+    public function it_create_record_returns_false_if_table_is_not_set()
+    {
+        $this->assertFalse(DB::table('')->create(['name' => 'Raj']));
+    }
 }

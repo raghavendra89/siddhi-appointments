@@ -257,4 +257,44 @@ class ValidatorTest extends TestCase
             $this->assertSame( $errors, $e->errors() );
         }
     }
+
+    /** @test */
+    public function validation_of_multiple_nested_rules()
+    {
+        $data = [
+            'time_slots' => [
+                'start_time' => 20,
+                'slot_duration' => 'string'
+            ]
+        ];
+        $rules = [
+            'time_slots.start_time' => 'required|regex:([0-1]\d|2[0-3]):[0-5]\d$',
+            'time_slots.slot_duration' => 'required|int'
+        ];
+
+        $validator = new Validator();
+        try {
+            $validator->validate( $data, $rules );
+        } catch ( ValidationException $e ) {
+            $errors = [
+                'time_slots' => [
+                    'start_time' => 'The value does not match the regex pattern.',
+                    'slot_duration' => 'The field must be an integer.'
+                ]
+            ];
+
+            $this->assertSame( $errors, $e->errors() );
+        }
+    }
+
+    /** @test */
+    public function it_performs_validation_only_if_the_field_is_required()
+    {
+        $data = [];
+        $rules = ['count' => 'int'];
+
+        $validator = new Validator();
+        $result = $validator->validate( $data, $rules );
+        $this->assertTrue($result);
+    }
 }
