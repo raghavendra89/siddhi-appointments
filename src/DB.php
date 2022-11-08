@@ -12,6 +12,13 @@ class DB
     private $schema_files_path = SA_PLUGIN_PATH . 'src/schema/';
 
     /**
+     * Table name on which the queries will be run.
+     *
+     * @var string $table_name
+     */
+    private $table_name;
+
+    /**
      * Reads the schema from the given directory
      * and returns the array.
      *
@@ -71,5 +78,110 @@ class DB
         foreach ( $schema as $table_name => $sql ) {
             $this->db_delta( $sql );
         }
+    }
+
+    public static function table( string $table_name )
+    {
+        global $wpdb;
+
+        $db = new DB;
+        if ( ! empty( $table_name ) ) {
+            $db->table_name = $wpdb->prefix . $table_name;
+        }
+
+        return $db;
+    }
+
+    /**
+     * Insert a record in the DB.
+     *
+     * @param  array $data Data to be inserted.
+     * @param  array $placeholders Data format.
+     * @return int|bool Primary key of the inserted record or false.
+     */
+    public function create( array $data, array $placeholders = [] )
+    {
+        if ( empty( $this->table_name ) ) {
+            return false;
+        }
+
+        global $wpdb;
+
+        $wpdb->insert( $this->table_name, $data, $placeholders );
+
+        return $wpdb->insert_id;
+    }
+
+    /**
+     * Update a record in DB.
+     *
+     * @param  array $data Update data.
+     * @param  array $where Where condition.
+     * @param  array $format Data format.
+     * @param  array $whereFormat Where condition data format.
+     * @return int|bool
+     */
+    public function update( array $data, array $where, array $format = [], array $whereFormat = [] )
+    {
+        if ( empty( $this->table_name ) ) {
+            return false;
+        }
+
+        global $wpdb;
+
+        return $wpdb->update( $this->table_name, $data, $where, $format, $whereFormat );
+    }
+
+    /**
+     * Get an entry from DB by ID.
+     *
+     * @param  int $id Primary key of the entry.
+     * @param  string $type Output type.
+     * @return object|array|null
+     */
+    public function find( int $id , $type = 'ARRAY_A')
+    {
+        if ( empty( $this->table_name ) ) {
+            return false;
+        }
+
+        if ( ! in_array( $type, ['OBJECT', 'ARRAY_A', 'ARRAY_N'] ) ) {
+            $type = 'ARRAY_A';
+        }
+
+        global $wpdb;
+
+        return $wpdb->get_row( "SELECT * FROM {$this->table_name} WHERE id = %d" . $id );
+    }
+
+    /**
+     * Run general query.
+     *
+     * @param  string $query Query.
+     * @param  array $values Values to substiture into the query.
+     * @return
+     */
+    public function query( string $query, array $values )
+    {
+        global $wpdb;
+
+        return $wpdb->query( $wpdb->prepare( $query, $values ) );
+    }
+
+    /**
+     * Delete from table by id.
+     *
+     * @param  int $id primary key
+     * @return int|bool Number of rows affected. In this case 1 or false.
+     */
+    public function delete( int $id )
+    {
+        if ( empty( $this->table_name ) ) {
+            return false;
+        }
+
+        global $wpdb;
+
+        return $wpdb->delete( $this->table_name, ['id' => $id], ['%d'] );
     }
 }
