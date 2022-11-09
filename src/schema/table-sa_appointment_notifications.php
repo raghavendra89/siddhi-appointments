@@ -3,6 +3,7 @@
 return '(
         `id` MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT,
         `appointment_type_id` MEDIUMINT UNSIGNED NOT NULL,
+        `type` VARCHAR(50) NOT NULL,
         `notification_name` VARCHAR(255) NULL,
         `subject` VARCHAR(500) NULL,
         `body` TEXT(5000) NULL,

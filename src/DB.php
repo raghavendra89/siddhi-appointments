@@ -139,7 +139,7 @@ class DB
      * @param  string $type Output type.
      * @return object|array|null
      */
-    public function find( int $id , $type = 'ARRAY_A')
+    public function find( int $id , $type = 'ARRAY_A' )
     {
         if ( empty( $this->table_name ) ) {
             return false;
@@ -151,7 +151,7 @@ class DB
 
         global $wpdb;
 
-        return $wpdb->get_row( "SELECT * FROM {$this->table_name} WHERE id = %d" . $id );
+        return $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$this->table_name} WHERE id = %d", $id ), $type );
     }
 
     /**
@@ -183,5 +183,26 @@ class DB
         global $wpdb;
 
         return $wpdb->delete( $this->table_name, ['id' => $id], ['%d'] );
+    }
+
+    /**
+     * Delete from table by id.
+     *
+     * @param  int $id primary key
+     * @return int|bool Number of rows affected. In this case 1 or false.
+     */
+    public function deleteWhere( array $where, array $whereFormat = [] )
+    {
+        if ( empty( $this->table_name ) ) {
+            return false;
+        }
+
+        if ( empty( $where ) ) {
+            return false;
+        }
+
+        global $wpdb;
+
+        return $wpdb->delete( $this->table_name, $where, $whereFormat );
     }
 }

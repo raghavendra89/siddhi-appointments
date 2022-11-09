@@ -33,17 +33,9 @@ class AppointmentType
         $this->validator->validate( $appointmentTypeData, $this->rules );
     }
 
-    /**
-     * Create new appointment type.
-     *
-     * @param  array $appointmentTypeData
-     * @return int Newly created appointment type id.
-     */
-    public function create( array $appointmentTypeData )
+    private function getAppointmentTypeData( array $appointmentTypeData )
     {
-        $this->validate( $appointmentTypeData );
-
-        $data = [
+        return [
             'name' => $appointmentTypeData['basic_details']['name'],
             'description' => $appointmentTypeData['basic_details']['description'] ?? '',
             'slot_duration' => $appointmentTypeData['time_slots']['slot_duration'],
@@ -54,8 +46,19 @@ class AppointmentType
             'buffer_time_after' => $appointmentTypeData['time_slots']['buffer_time_after'] ?? 0,
             'customer_info_fields' => json_encode( $appointmentTypeData['customer_info']['fields'] )
         ];
+    }
 
-        $columns = implode( ', ', array_keys( $data ) );
+    /**
+     * Create new appointment type.
+     *
+     * @param  array $appointmentTypeData
+     * @return int Newly created appointment type id.
+     */
+    public function create( array $appointmentTypeData )
+    {
+        $this->validate( $appointmentTypeData );
+
+        $data = $this->getAppointmentTypeData( $appointmentTypeData );
 
         $appointmentTypeId = DB::table($this->tableName)->create( $data, ['%s', '%s', '%d', '%s', '%s', '%s', '%d', '%d', '%s'] );
 
@@ -66,6 +69,43 @@ class AppointmentType
         }
 
         return $appointmentTypeId;
+    }
+
+    /**
+     * Update the appointment type.
+     *
+     * @param  int $appointmentTypeId
+     * @param  array $appointmentTypeData
+     * @throws \Exception
+     * @throws \ValidationException
+     * @return void
+     */
+    public function update( int $appointmentTypeId, array $appointmentTypeData )
+    {
+        $appointmentType = DB::table($this->tableName)->find( $appointmentTypeId );
+        if ( empty( $appointmentType ) ) {
+            throw new \Exception( 'The appointment type does not exist.' );
+        }
+
+        $this->validate( $appointmentTypeData );
+
+        $data = $this->getAppointmentTypeData( $appointmentTypeData );
+
+        $where = [ 'id' => $appointmentTypeId ];
+        $dataFormat = ['%s', '%s', '%d', '%s', '%s', '%s', '%d', '%d', '%s'];
+        $whereFormat = ['%d'];
+
+        $appointmentTypeId = DB::table($this->tableName)->update( $data, $where, $dataFormat, $whereFormat );
+
+        DB::table('sa_inactive_appointments')->deleteWhere( ['appointment_type_id' => $appointmentTypeId] );
+
+        $inactiveAppointments = $appointmentTypeData['time_slots']['inactive_appointments'] ?? [];
+        // Inactive Appointments
+        $this->add_inactive_appointments( $appointmentTypeId, $inactiveAppointments );
+
+        foreach ( $appointmentTypeData['notifications'] as $notificationData ) {
+            $this->_addOrUpdateNotification( $appointmentTypeId, $notificationData );
+        }
     }
 
     /**
@@ -102,5 +142,56 @@ class AppointmentType
             $query .= implode( ', ', $placeHolders );
             (new DB)->query( $query, $values );
         }
+    }
+
+    private function _addOrUpdateNotification( int $appointmentTypeId, array $notificationData )
+    {
+        $to = is_array( $notificationData['to'] ) ? $notificationData['to'] : [$notificationData['to']];
+        $cc = is_array( $notificationData['cc'] ) ? $notificationData['cc'] : [$notificationData['cc']];
+        $bcc = is_array( $notificationData['bcc'] ) ? $notificationData['bcc'] : [$notificationData['bcc']];
+
+        $type = $notificationData['type'];
+
+        $data = [
+            'subject' => $notificationData['subject'],
+            'body' => $notificationData['body'],
+            'to' => json_encode($to),
+            'cc' => json_encode($cc),
+            'bcc' => json_encode($bcc),
+            'active' => $notificationData['active'] ? 1 : 0
+        ];
+
+        $tableName = 'sa_appointment_notifications';
+        $where = ['appointment_type_id' => $appointmentTypeId, 'type' => $type];
+        $dataFormat = ['%s', '%s', '%s', '%s', '%s', '%d'];
+        $whereFormat = ['%d', '%s'];
+        $updateCount = DB::table($tableName)->update( $data, $where, $dataFormat, $whereFormat );
+
+        if ( $updateCount === 0 ) {
+            $data['appointment_type_id'] = $appointmentTypeId;
+            $data['type'] = $type;
+            $dataFormat[] = '%d';
+            $dataFormat[] = '%s';
+            // The notification doesn't exist, create it
+            $notificationId = DB::table($tableName)->create( $data, $dataFormat );
+        }
+    }
+
+    /**
+     * Add or update individual notifications.
+     *
+     * @param int $appointmentTypeId
+     * @param array $notificationData
+     * @throws \Exception
+     * @return void
+     */
+    public function addOrUpdateNotification( int $appointmentTypeId, array $notificationData )
+    {
+        $appointmentType = DB::table($this->tableName)->find( $appointmentTypeId );
+        if ( empty( $appointmentType ) ) {
+            throw new \Exception( 'The appointment type does not exist.' );
+        }
+
+        $this->_addOrUpdateNotification( $appointmentTypeId, $notificationData );
     }
 }
