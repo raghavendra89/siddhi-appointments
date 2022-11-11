@@ -133,6 +133,29 @@ class DB
     }
 
     /**
+     * Select results from the table.
+     *
+     * @param  string $query
+     * @param  array $values
+     * @return array|object
+     */
+    public function get($where = '', array $values = [])
+    {
+        if ( empty( $this->table_name ) ) {
+            return false;
+        }
+        $type = 'ARRAY_A';
+
+        global $wpdb;
+        $query = "SELECT * FROM {$this->table_name}";
+        if ( ! empty( $where ) ) {
+            $query .= ' ' . $where;
+        }
+
+        return $wpdb->get_results( $wpdb->prepare($query, $values), $type );
+    }
+
+    /**
      * Get an entry from DB by ID.
      *
      * @param  int $id Primary key of the entry.

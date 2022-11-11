@@ -11,6 +11,8 @@ class AppointmentType
     private $tableName;
     private $validator;
 
+    private $weekdays = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
+
     function __construct()
     {
         $this->tableName = 'sa_appointment_types';
@@ -95,7 +97,7 @@ class AppointmentType
         $dataFormat = ['%s', '%s', '%d', '%s', '%s', '%s', '%d', '%d', '%s'];
         $whereFormat = ['%d'];
 
-        $appointmentTypeId = DB::table($this->tableName)->update( $data, $where, $dataFormat, $whereFormat );
+        DB::table($this->tableName)->update( $data, $where, $dataFormat, $whereFormat );
 
         DB::table('sa_inactive_appointments')->deleteWhere( ['appointment_type_id' => $appointmentTypeId] );
 
@@ -104,7 +106,7 @@ class AppointmentType
         $this->add_inactive_appointments( $appointmentTypeId, $inactiveAppointments );
 
         foreach ( $appointmentTypeData['notifications'] as $notificationData ) {
-            $this->_addOrUpdateNotification( $appointmentTypeId, $notificationData );
+            $this->_add_or_update_notification( $appointmentTypeId, $notificationData );
         }
     }
 
@@ -116,7 +118,6 @@ class AppointmentType
      */
     private function add_inactive_appointments( int $appointmentTypeId, array $inactiveAppointments )
     {
-        $weekdays = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
         global $wpdb;
         $tableName = $wpdb->prefix . 'sa_inactive_appointments';
 
@@ -125,7 +126,7 @@ class AppointmentType
         $values = [];
         $placeHolders = [];
         $hasInactiveAppointments = false;
-        foreach ( $weekdays as $weekday ) {
+        foreach ( $this->weekdays as $weekday ) {
             if ( in_array( $weekday, array_keys( $inactiveAppointments ) ) ) {
                 foreach ( $inactiveAppointments[$weekday] as $startTime ) {
                     $placeHolders[] .= "('%d', '%s', '%d')";
@@ -144,7 +145,7 @@ class AppointmentType
         }
     }
 
-    private function _addOrUpdateNotification( int $appointmentTypeId, array $notificationData )
+    private function _add_or_update_notification( int $appointmentTypeId, array $notificationData )
     {
         $to = is_array( $notificationData['to'] ) ? $notificationData['to'] : [$notificationData['to']];
         $cc = is_array( $notificationData['cc'] ) ? $notificationData['cc'] : [$notificationData['cc']];
@@ -185,13 +186,115 @@ class AppointmentType
      * @throws \Exception
      * @return void
      */
-    public function addOrUpdateNotification( int $appointmentTypeId, array $notificationData )
+    public function add_or_update_notification( int $appointmentTypeId, array $notificationData )
     {
         $appointmentType = DB::table($this->tableName)->find( $appointmentTypeId );
         if ( empty( $appointmentType ) ) {
             throw new \Exception( 'The appointment type does not exist.' );
         }
 
-        $this->_addOrUpdateNotification( $appointmentTypeId, $notificationData );
+        $this->_add_or_update_notification( $appointmentTypeId, $notificationData );
+    }
+
+    /**
+     * Delete the appointment type and all its data.
+     *
+     * @param  int $appointmentTypeId
+     * @throws \Exception
+     * @return bool
+     */
+    public function delete( int $appointmentTypeId )
+    {
+        $appointmentType = DB::table($this->tableName)->find( $appointmentTypeId );
+        if ( empty( $appointmentType ) ) {
+            throw new \Exception( 'The appointment type does not exist.' );
+        }
+
+        DB::table($this->tableName)->delete( $appointmentTypeId );
+        DB::table('sa_inactive_appointments')->deleteWhere( ['appointment_type_id' => $appointmentTypeId] );
+        DB::table('sa_appointment_notifications')->deleteWhere( ['appointment_type_id' => $appointmentTypeId] );
+
+        return true;
+    }
+
+    private function format_time( $time )
+    {
+        return preg_replace( '/(\d{2}:\d{2}):\d{2}/', '$1$2', $time);
+    }
+
+    private function get_appointment_type_notifications( int $appointmentTypeId )
+    {
+        $notifications = DB::table('sa_appointment_notifications')
+                           ->get( "WHERE appointment_type_id=%d", [$appointmentTypeId] );
+
+        $notificationData = [];
+        if ( is_array( $notifications ) ) {
+            foreach ( $notifications as $notification ) {
+                $notificationData[$notification['type']] = [
+                    'subject' => $notification['subject'],
+                    'body' => $notification['body'],
+                    'to' => json_decode($notification['to'], true),
+                    'cc' => json_decode($notification['cc'], true),
+                    'bcc' => json_decode($notification['bcc'], true),
+                    'active' => (bool) $notification['active']
+                ];
+            }
+        }
+
+        return $notificationData;
+    }
+
+    public function get( int $appointmentTypeId )
+    {
+        $appointmentType = DB::table($this->tableName)->find( $appointmentTypeId );
+
+        if ( empty( $appointmentType ) ) {
+            return NULL;
+        }
+
+        $inactiveAppointments = DB::table('sa_inactive_appointments')
+                                  ->get( "WHERE appointment_type_id=%d", [$appointmentType['id']] );
+
+        $inactiveAppointmentsData = [];
+        foreach ( $this->weekdays as $weekday ) {
+            $inactiveAppointmentsData[$weekday] = [];
+        }
+
+        if ( is_array( $inactiveAppointments ) ) {
+            foreach ( $inactiveAppointments as $inactiveAppointment ) {
+                if ( $inactiveAppointment['week_day'] < 8 && $inactiveAppointment['week_day'] > 0 ) {
+                    $weekday = $this->weekdays[$inactiveAppointment['week_day'] - 1];
+                    $inactiveAppointmentsData[$weekday][] = $this->format_time($inactiveAppointment['start_time']);
+                }
+            }
+        }
+
+        $appointmentTypeData = [
+            'basic_details' => [
+                'name' => $appointmentType['name'],
+                'description' => $appointmentType['description']
+            ],
+            'time_slots' => [
+                'slot_duration' => $appointmentType['slot_duration'],
+                'start_time' => $appointmentType['start_time'],
+                'end_time' => $appointmentType['end_time'],
+                'weekends' => json_decode($appointmentType['weekends']) ?? [],
+                'buffer_time_before' => $appointmentType['buffer_time_before'],
+                'buffer_time_after' => $appointmentType['buffer_time_after'],
+                'inactive_appointments' => $inactiveAppointmentsData
+            ],
+            'customer_info' => [
+                'fields' => json_decode($appointmentType['customer_info_fields'], true)
+            ],
+            'notifications' => $this->get_appointment_type_notifications( $appointmentType['id'] )
+        ];
+
+        return $appointmentTypeData;
+    }
+
+    public function get_all()
+    {
+        // Implement select_all method in DB class
+        return DB::table($this->tableName)->get();
     }
 }

@@ -281,7 +281,7 @@ class AppointmentTypeTest extends TestCase
 
         // Perform update
         $appointmentType = new AppointmentType();
-        $appointmentType->addOrUpdateNotification( 81632, $this->notificationData );
+        $appointmentType->add_or_update_notification( 81632, $this->notificationData );
     }
 
     /** @test */
@@ -294,7 +294,7 @@ class AppointmentTypeTest extends TestCase
         $appointmentTypeId = $appointmentType->create( $appointmentTypeData );
 
         // Perform update
-        $appointmentType->addOrUpdateNotification( $appointmentTypeId, $this->notificationData );
+        $appointmentType->add_or_update_notification( $appointmentTypeId, $this->notificationData );
 
         $tableName = $wpdb->prefix . 'sa_appointment_notifications';
         $adminNotification = $wpdb->get_row(
@@ -306,5 +306,108 @@ class AppointmentTypeTest extends TestCase
         $this->assertSame( $this->notificationData['type'], $adminNotification['type'] );
         $this->assertSame( $this->notificationData['subject'], $adminNotification['subject'] );
         $this->assertSame( json_encode($this->notificationData['to']), $adminNotification['to'] );
+    }
+
+    /** @test */
+    public function deleting_appointment_type_throws_exception_if_it_does_not_exist()
+    {
+        $this->expectException(\Exception::class);
+
+        // Perform update
+        $appointmentType = new AppointmentType();
+        $appointmentType->delete( 81632 );
+    }
+
+    /** @test */
+    public function it_deletes_the_appointment_type_and_all_its_data()
+    {
+        // Given an appointment type
+        global $wpdb;
+        $appointmentTypeData = $this->appointmentTypeData;
+        $appointmentType = new AppointmentType();
+        $appointmentTypeId = $appointmentType->create( $appointmentTypeData );
+
+        $appointmentTypeData['basic_details']['name'] = 'Online Consultation Updated';
+        $appointmentTypeData['notifications']['admin_notification'] = $this->notificationData;
+
+        // Update to add the notifications
+        $appointmentType->update( $appointmentTypeId, $appointmentTypeData );
+
+        $appointmentType->delete( $appointmentTypeId );
+
+        $tables = [
+            $wpdb->prefix . 'sa_appointment_types',
+            $wpdb->prefix . 'sa_inactive_appointments',
+            $wpdb->prefix . 'sa_appointment_notifications'
+        ];
+
+        foreach ($tables as $table) {
+            $column = ($table == $wpdb->prefix . 'sa_appointment_types') ? 'id' : 'appointment_type_id';
+            $results = $wpdb->get_results(
+                $wpdb->prepare( "SELECT * FROM $table WHERE $column=%d", $appointmentTypeId ),
+                'ARRAY_A'
+            );
+
+            $this->assertEmpty( $results );
+        }
+    }
+
+    /** @test */
+    public function get_appointment_type_returns_null_if_it_does_not_exist()
+    {
+        $appointmentType = new AppointmentType();
+        $appointmentType = $appointmentType->get( 87297391 );
+
+        $this->assertNull( $appointmentType );
+    }
+
+    /** @test */
+    public function it_retrieves_appointment_type_by_id()
+    {
+        // Given an appointment type
+        global $wpdb;
+        $appointmentTypeData = $this->appointmentTypeData;
+        $appointmentType = new AppointmentType();
+        $appointmentTypeId = $appointmentType->create( $appointmentTypeData );
+
+        $appointmentTypeData['notifications']['admin_notification'] = $this->notificationData;
+        // Update to add the notifications
+        $appointmentType->update( $appointmentTypeId, $appointmentTypeData );
+
+        $appointmentType = $appointmentType->get( $appointmentTypeId );
+
+        $dataKeys = array_keys($appointmentType);
+        $this->assertTrue( in_array('basic_details', $dataKeys) );
+        $this->assertTrue( in_array('time_slots', $dataKeys) );
+        $this->assertTrue( in_array('customer_info', $dataKeys) );
+        $this->assertTrue( in_array('notifications', $dataKeys) );
+
+        $weekDays = array_keys($appointmentType['time_slots']['inactive_appointments']);
+        $this->assertSame(7, count($weekDays));
+
+        $this->assertSame(
+            $appointmentTypeData['time_slots']['inactive_appointments']['friday'],
+            $appointmentType['time_slots']['inactive_appointments']['friday']
+        );
+
+        $this->assertSame( $appointmentTypeData['customer_info'], $appointmentType['customer_info']);
+        $this->assertSame( '', $appointmentType['basic_details']['description'] );
+    }
+
+    /** @test */
+    public function it_retrieves_appointment_types_list()
+    {
+        // Given an appointment type
+        global $wpdb;
+        $appointmentTypeData = $this->appointmentTypeData;
+        $appointmentType = new AppointmentType();
+        $appointmentTypeId = $appointmentType->create( $appointmentTypeData );
+        $appointmentTypeData['basic_details']['name'] = 'In-Person Consultation';
+        $appointmentTypeId = $appointmentType->create( $appointmentTypeData );
+
+        $appointmentTypes = $appointmentType->get_all();
+
+        $this->assertEquals( 2, count($appointmentTypes) );
+        $this->assertSame( 'In-Person Consultation', $appointmentTypes[1]['name'] );
     }
 }
