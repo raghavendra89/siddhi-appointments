@@ -37,6 +37,8 @@ class Plugin
 
         $this->register_admin_styles();
 
+        $this->init_rest_api();
+
         if ( is_admin() ) {
             global $sa_appointments_wp;
 
@@ -71,5 +73,12 @@ class Plugin
         wp_enqueue_style( 'sa_appointments_admin' );
 
         wp_enqueue_script( 'sa_appointments_base' );
+    }
+
+    private function init_rest_api()
+    {
+        global $sa_appointments_wp;
+
+        $sa_appointments_wp->add_action( 'rest_api_init', array( Api::class, 'register_rest_routes' ) );
     }
 }

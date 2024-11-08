@@ -8,6 +8,8 @@ require_once __DIR__ . '/../src/constants.php';
 
 class TestCase extends BaseTestCase
 {
+    use DbAssertions, MakeRequest;
+
     function __construct()
     {
         parent::__construct();

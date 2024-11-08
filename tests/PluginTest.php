@@ -60,15 +60,18 @@ class PluginTest extends TestCase
     }
 
     /** @test */
-    public function it_enqueues_admin_scripts_and_styles()
+    public function it_inits_plugin_actions()
     {
         $this->setAsAdminScreen();
 
         // Assert that do_action is fired
         global $sa_appointments_wp;
-        $sa_appointments_wp->expects( $this->once() )
+        $sa_appointments_wp->expects( $this->exactly(2) )
                            ->method( 'add_action' )
-                           ->with( 'admin_enqueue_scripts' );
+                           ->withConsecutive(
+                                ['rest_api_init'],
+                                ['admin_enqueue_scripts'],
+                           );
 
         $plugin = new Plugin( $this->installer, $this->admin_menu );
         $plugin->init();
